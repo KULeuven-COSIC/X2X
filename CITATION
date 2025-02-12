@@ -1,0 +1,7 @@
+@misc{cryptoeprint:2024/114,
+      author = {Quinten Norga and Jan-Pieter D'Anvers and Suparna Kundu and Ingrid Verbauwhede},
+      title = {{X2X}: Low-Randomness and High-Throughput {A2B} and {B2A} Conversions for $d+1$ shares in Hardware},
+      howpublished = {Cryptology {ePrint} Archive, Paper 2024/114},
+      year = {2024},
+      url = {https://eprint.iacr.org/2024/114}
+}
