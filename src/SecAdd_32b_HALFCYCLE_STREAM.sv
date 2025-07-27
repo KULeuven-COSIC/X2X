@@ -88,7 +88,7 @@ module SecAdd_32b_HALFCYCLE_STREAM
     logic [4 - 1 : 0]   box_G1_result0      [N_CYCLES_BOX : 0][N_SHARES - 1 : 0]; // 
     
     logic [2 - 1 : 0]   box_P1_result1      [N_CYCLES_BOX * 2 : 0][N_SHARES - 1 : 0]; // 4,12
-    logic [1 - 1 : 0]   box_G1_result1      [N_CYCLES_BOX * 2 : 0][N_SHARES - 1 : 0]; // 
+    logic [2 - 1 : 0]   box_G1_result1      [N_CYCLES_BOX * 2 : 0][N_SHARES - 1 : 0]; // 
     
     logic [1 - 1 : 0]   box_P1_result2      [N_CYCLES_BOX * 3 : 0][N_SHARES - 1 : 0]; // 8
     logic [1 - 1 : 0]   box_G1_result2      [N_CYCLES_BOX * 3 : 0][N_SHARES - 1 : 0]; // 
@@ -210,7 +210,7 @@ module SecAdd_32b_HALFCYCLE_STREAM
             box_pj[4][j] = '0;
             box_gj[4][j] = {box_G[3][j][7], box_G[3][j][7], box_G[3][j][7], box_G[3][j][7], box_G[3][j][7], box_G[3][j][7], box_G[3][j][7], box_G[3][j][7], box_G[3][j][7], box_G[3][j][7], box_G[3][j][7], box_G[3][j][7], box_G[3][j][7], box_G[3][j][7], box_G[3][j][7], box_G[3][j][7]};
             
-            final_gi[j] = {box_G[4][j][15], box_G[4][j][14],box_G[4][j][13],box_G[4][j][12],box_G[4][j][11], box_G[4][j][10], box_G[4][j][9],box_G[4][j][8],box_G[4][j][7],box_G[4][j][6],box_G[4][j][5],box_G[4][j][4],box_G[4][j][3],box_G[4][j][2],box_G[4][j][1],box_G[4][j][0], box_G4_result0[0][j][7], box_G4_result0[0][j][6], box_G4_result0[0][j][5], box_G4_result0[0][j][4], box_G4_result0[0][j][3], box_G4_result0[0][j][2], box_G4_result0[0][j][1], box_G4_result0[0][j][0],  box_G3_result0[0][j][3],box_G3_result0[0][j][2],box_G3_result0[0][j][1],box_G3_result0[0][j][0],box_G2_result1[0][j][1],box_G2_result1[0][j][0],box_G1_result2[0][j][0],   1'b0};
+            final_gi[j] = {box_G[4][j][15], box_G[4][j][14],box_G[4][j][13],box_G[4][j][12],box_G[4][j][11], box_G[4][j][10], box_G[4][j][9],box_G[4][j][8],box_G[4][j][7],box_G[4][j][6],box_G[4][j][5],box_G[4][j][4],box_G[4][j][3],box_G[4][j][2],box_G[4][j][1],box_G[4][j][0], box_G4_result0[0][j][7], box_G4_result0[0][j][6], box_G4_result0[0][j][5], box_G4_result0[0][j][4], box_G4_result0[0][j][3], box_G4_result0[0][j][2], box_G4_result0[0][j][1], box_G4_result0[0][j][0],  box_G3_result1[0][j][3],box_G3_result1[0][j][2],box_G3_result1[0][j][1],box_G3_result1[0][j][0],box_G2_result2[0][j][1],box_G2_result2[0][j][0],box_G1_result3[0][j][0],   1'b0};
         end
 	end
 	
