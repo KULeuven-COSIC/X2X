@@ -327,6 +327,15 @@ module X2X_32b_2SHARE_HALFCYCLE_STREAM
             (.clk(clk), .rst_n(rst_n), .en(data_type_reg), .d(S_SecAdd[0][idy]), .q(S_SecAdd_out_reg[idy])); 
         end
         
+        // NEW
+        for (idy = 0; idy < RND_TRIANGLE_SHARES; idy++)
+        begin
+            (* keep_hierarchy = "TRUE" *) D_reg 
+            #(.PARAM_WIDTH(PARAM_WIDTH)) 
+            D_reg_fresh_rnd_modq
+            (.clk(clk), .rst_n(rst_n), .en(data_type_reg), .d(fresh_rnd_modq[N_CYCLES][2 * (N_SHARES - 1) + idy]), .q(fresh_rnd_modq_reg[idy])); 
+        end 
+        
     end
     else
     begin

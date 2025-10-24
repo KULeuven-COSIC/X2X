@@ -67,7 +67,7 @@ module X2X_32b_HALF_STREAM_tb;
     localparam print_data = 1;
     localparam N_SIMULATIONS = 10;
     localparam DUAL_MODE = 0;       // 2 simulataneous mod power-of-two calculations
-    localparam HALFCYCLE = 1;       // simulate halfcycle implementation
+    localparam HALFCYCLE = 0;       // simulate halfcycle implementation
     localparam LAB_MODE = 1;        // 1 data operand calculates at a time
     /////////////////////////////////////////
     
