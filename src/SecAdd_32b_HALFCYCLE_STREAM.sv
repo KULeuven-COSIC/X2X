@@ -117,10 +117,18 @@ module SecAdd_32b_HALFCYCLE_STREAM
 	
     logic [PARAM_WIDTH - 1 : 0]    final_gi     [N_SHARES - 1 : 0];
 	
+    logic [PARAM_WIDTH - 1 : 0] a_int [N_SHARES - 1:0];
+    logic [PARAM_WIDTH - 1 : 0] b_int [N_SHARES - 1:0];
+    logic [PARAM_WIDTH - 1 : 0] S_int [N_SHARES - 1:0];
+
 	/////////////
 	// CONTROL //
 	/////////////
 	
+    assign a_int = (start) ? a     : '{default: '0};
+    assign b_int = (start) ? b     : '{default: '0};
+    assign S     = ( done) ? S_int : '{default: '0};
+
 	// BOX
 	assign start_done_box[0] = done_triangle;
 	assign done = start_done_box[N_STAGES];
@@ -230,8 +238,8 @@ module SecAdd_32b_HALFCYCLE_STREAM
         .rst_n          (rst_n              ),
         .start          (start              ), 
         .done_combined  (done_triangle      ),
-        .a              (a                  ),
-        .b              (b                  ),
+        .a              (a_int              ),
+        .b              (b_int              ),
         .fresh_rnd      (fresh_rnd_triangle ),
         .p              (output_p_triangle  ),
         .g              (output_g_triangle  )
@@ -244,8 +252,8 @@ module SecAdd_32b_HALFCYCLE_STREAM
     )
     XOR_inst
     (
-        .a(a            ),
-        .b(b            ),
+        .a(a_int        ),
+        .b(b_int        ),
         .c(ab_triangle  )
     );
     
@@ -259,7 +267,7 @@ module SecAdd_32b_HALFCYCLE_STREAM
      (
          .a(ab_reg_box[N_CYCLES] ),
          .b(final_gi             ),
-         .c(S                    )
+         .c(S_int                )
      );
     
     generate
@@ -536,3 +544,4 @@ module SecAdd_32b_HALFCYCLE_STREAM
 	
 endmodule
 	
+
