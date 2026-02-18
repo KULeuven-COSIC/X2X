@@ -287,7 +287,7 @@ module SecAdd_32b_HALFCYCLE_STREAM
     for (idx = 0; idx < RND_BOX_SHARES; idx++)
     begin
         (* keep_hierarchy = "TRUE" *) D_reg 
-        #(.PARAM_WIDTH(BOX_WIDTH)) 
+        #(.PARAM_WIDTH(BOX_WIDTH), .EN(0)) 
         D_reg_box_rnd
         (.clk(clk), .rst_n(rst_n), .en(1'b1), .d(fresh_rnd_box[idx]), .q(fresh_rnd_box_reg[idx]));
     end
@@ -363,7 +363,7 @@ module SecAdd_32b_HALFCYCLE_STREAM
         for (idy = 0; idy < RND_BOX_SHARES - RND_BOX_LAYER_SHARES; idy++)
         begin
             (* keep_hierarchy = "TRUE" *) D_reg 
-            #(.PARAM_WIDTH(BOX_WIDTH)) 
+            #(.PARAM_WIDTH(BOX_WIDTH), .EN(0)) 
             D_reg_fresh_rnd_box0
             (.clk(clk), .rst_n(rst_n), .en(1'b1), .d(fresh_rnd_box0_reg[idx][idy]), .q(fresh_rnd_box0_reg[idx + 1][idy]));
         end
@@ -371,7 +371,7 @@ module SecAdd_32b_HALFCYCLE_STREAM
         for (idy = 0; idy < RND_BOX_SHARES - 2 * RND_BOX_LAYER_SHARES; idy++)
         begin
             (* keep_hierarchy = "TRUE" *) D_reg 
-            #(.PARAM_WIDTH(BOX_WIDTH)) 
+            #(.PARAM_WIDTH(BOX_WIDTH), .EN(0)) 
             D_reg_fresh_rnd_box1
             (.clk(clk), .rst_n(rst_n), .en(1'b1), .d(fresh_rnd_box1_reg[idx][idy]), .q(fresh_rnd_box1_reg[idx + 1][idy]));
         end
@@ -379,7 +379,7 @@ module SecAdd_32b_HALFCYCLE_STREAM
         for (idy = 0; idy < RND_BOX_SHARES - 3 * RND_BOX_LAYER_SHARES; idy++)
         begin
             (* keep_hierarchy = "TRUE" *) D_reg 
-            #(.PARAM_WIDTH(BOX_WIDTH)) 
+            #(.PARAM_WIDTH(BOX_WIDTH), .EN(0)) 
             D_reg_fresh_rnd_box2
             (.clk(clk), .rst_n(rst_n), .en(1'b1), .d(fresh_rnd_box2_reg[idx][idy]), .q(fresh_rnd_box2_reg[idx + 1][idy]));
         end
@@ -387,7 +387,7 @@ module SecAdd_32b_HALFCYCLE_STREAM
         for (idy = 0; idy < RND_BOX_LAYER_FINAL_SHARES; idy++)
         begin
             (* keep_hierarchy = "TRUE" *) D_reg 
-            #(.PARAM_WIDTH(BOX_WIDTH)) 
+            #(.PARAM_WIDTH(BOX_WIDTH), .EN(0)) 
             D_reg_fresh_rnd_box3
             (.clk(clk), .rst_n(rst_n), .en(1'b1), .d(fresh_rnd_box3_reg[idx][idy]), .q(fresh_rnd_box3_reg[idx + 1][idy]));
         end

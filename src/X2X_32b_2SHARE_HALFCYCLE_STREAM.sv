@@ -79,9 +79,9 @@ module X2X_32b_2SHARE_HALFCYCLE_STREAM
     logic [PARAM_WIDTH - 1 : 0] active_fresh_rnd                [RND_SHARES - 2 * N_SHARES - 1 : 0];
     logic [PARAM_WIDTH - 1 : 0] fresh_rnd_shares_reg_in         [RND_SHARES - 2 * N_SHARES - 1 : 0];
     logic [PARAM_WIDTH - 1 : 0] fresh_rnd_shares_reg            [RND_SHARES - 2 * N_SHARES - 1 : 0];
-    logic [BOX_WIDTH - 1 : 0]   active_fresh_rnd_8bit           [RND_SHARES_BOX - 1 : 0];
-    logic [BOX_WIDTH - 1 : 0]   fresh_rnd_shares_8bit_reg       [RND_SHARES_BOX - 1 : 0];
-    logic [BOX_WIDTH - 1 : 0]   fresh_rnd_shares_8bit_reg_in    [RND_SHARES_BOX - 1 : 0];
+    //logic [BOX_WIDTH - 1 : 0]   active_fresh_rnd_8bit           [RND_SHARES_BOX - 1 : 0];
+    //logic [BOX_WIDTH - 1 : 0]   fresh_rnd_shares_8bit_reg       [RND_SHARES_BOX - 1 : 0];
+    //logic [BOX_WIDTH - 1 : 0]   fresh_rnd_shares_8bit_reg_in    [RND_SHARES_BOX - 1 : 0];
     
     // SECADD 
     logic                       start_SecAdd        [2 - 1 : 0];
@@ -100,9 +100,10 @@ module X2X_32b_2SHARE_HALFCYCLE_STREAM
     
     logic                       done_SecAdd_reg     [2 - 1 : 0];
     
-    logic [PARAM_WIDTH - 1 : 0] fresh_rnd_modq      [N_CYCLES : 0][RND_TRIANGLE_SHARES + 2 * (N_SHARES - 1) - 1 : 0]; // RND_TRIANGLE_SHARES + 1
-    logic [PARAM_WIDTH - 1 : 0] fresh_rnd_modq_reg  [RND_TRIANGLE_SHARES - 1 : 0];
-    logic [BOX_WIDTH - 1 : 0]   fresh_rnd_8bit_modq [N_CYCLES : 0][RND_BOX_SHARES - 1 : 0];
+    //logic [PARAM_WIDTH - 1 : 0] fresh_rnd_modq      [N_CYCLES : 0][RND_TRIANGLE_SHARES + 2 * (N_SHARES - 1) - 1 : 0]; // RND_TRIANGLE_SHARES + 1
+    logic [PARAM_WIDTH - 1 : 0] fresh_rnd_modq      [N_CYCLES : 0][RND_TRIANGLE_SHARES - 1 : 0]; // RND_TRIANGLE_SHARES + 1
+    //logic [PARAM_WIDTH - 1 : 0] fresh_rnd_modq_reg  [RND_TRIANGLE_SHARES - 1 : 0];
+    //logic [BOX_WIDTH - 1 : 0]   fresh_rnd_8bit_modq [N_CYCLES : 0][RND_BOX_SHARES - 1 : 0];
     
     // FullXOR 
     logic [PARAM_WIDTH - 1 : 0] X2B_out             [2 - 1 : 0][N_SHARES - 1 : 0];
@@ -193,26 +194,31 @@ module X2X_32b_2SHARE_HALFCYCLE_STREAM
 	   begin
 	       fresh_rnd_shares_reg_in[i] = en_expand[0] ? fresh_rnd_shares[2 * N_SHARES + i] : '0; // HERE
 	   end
-	   fresh_rnd_shares_8bit_reg_in = en_expand[0] ? fresh_rnd_shares_8bit : '{default: '0}; // HERE
+	   //fresh_rnd_shares_8bit_reg_in = en_expand[0] ? fresh_rnd_shares_8bit : '{default: '0}; // HERE
 	   
-	   fresh_rnd_triangle[0] = active_fresh_rnd[2 * (N_SHARES - 1) + RND_TRIANGLE_SHARES - 1 : 2 * (N_SHARES - 1)];
+	   /*fresh_rnd_triangle[0] = active_fresh_rnd[2 * (N_SHARES - 1) + RND_TRIANGLE_SHARES - 1 : 2 * (N_SHARES - 1)];
 	   for (int i = 0; i < RND_TRIANGLE_SHARES; i=i+1)
 	   begin
 	       fresh_rnd_triangle[1][i] = data_type_reg ? fresh_rnd_modq_reg[i] : active_fresh_rnd[2 * (N_SHARES - 1) + RND_TRIANGLE_SHARES + i]; 
            fresh_rnd_modq[0][2 * (N_SHARES - 1) + i] = active_fresh_rnd[2 * (N_SHARES - 1) + RND_TRIANGLE_SHARES + i];
-	   end
+	   end*/
+	   fresh_rnd_triangle[0][0] = fresh_rnd_shares[6];
+	   fresh_rnd_triangle[0][1] = fresh_rnd_shares[7];
+	   fresh_rnd_triangle[1][0] = fresh_rnd_shares[8];
+	   fresh_rnd_triangle[1][1] = fresh_rnd_shares[9];
 	   
 	   fresh_rnd_modq[0][0] = active_fresh_rnd[0];
 	   fresh_rnd_modq[0][1] = active_fresh_rnd[1];
        B2A_rnd_share[0] = conversion_mode_reg & data_type_reg ? fresh_rnd_modq[N_CYCLES][0] : '0;
 	   
-	   fresh_rnd_box[0] = active_fresh_rnd_8bit[RND_BOX_SHARES - 1 : 0];
+	   /*fresh_rnd_box[0] = active_fresh_rnd_8bit[RND_BOX_SHARES - 1 : 0];
 	   for (int i = 0; i < RND_BOX_SHARES; i=i+1)
 	   begin
 	       fresh_rnd_box[1][i] = data_type_reg ? fresh_rnd_8bit_modq[N_CYCLES][i] : active_fresh_rnd_8bit[RND_BOX_SHARES + i];
 	       fresh_rnd_8bit_modq[0][i] = active_fresh_rnd_8bit[RND_BOX_SHARES + i];
-	   end
-	   
+	   end*/
+	   fresh_rnd_box[0] = fresh_rnd_shares_8bit[RND_BOX_SHARES - 1 : 0];
+	   fresh_rnd_box[1] = fresh_rnd_shares_8bit[(2*RND_BOX_SHARES) - 1 : RND_BOX_SHARES];
 	   
 	   a_SecAdd[0] = expand_reg[0][N_SHARES - 1 : 0];
 	   b_SecAdd[0] = expand_reg[0][2 * N_SHARES - 1 : N_SHARES];
@@ -277,7 +283,7 @@ module X2X_32b_2SHARE_HALFCYCLE_STREAM
     begin
         assign active_expand = en_expand_reg;
         assign active_fresh_rnd = fresh_rnd_shares_reg;
-        assign active_fresh_rnd_8bit = fresh_rnd_shares_8bit_reg;
+        //assign active_fresh_rnd_8bit = fresh_rnd_shares_8bit_reg;
         assign active_B2Ap_share = B2Ap_share_reg;
          
         (* keep_hierarchy = "TRUE" *) D_reg 
@@ -298,13 +304,13 @@ module X2X_32b_2SHARE_HALFCYCLE_STREAM
             (.clk(clk), .rst_n(rst_n), .en(1'b1), .d(fresh_rnd_shares_reg_in[idy]), .q(fresh_rnd_shares_reg[idy])); 
         end
         
-        for (idy = 0; idy < RND_SHARES_BOX; idy++)
+        /*for (idy = 0; idy < RND_SHARES_BOX; idy++)
         begin
             (* keep_hierarchy = "TRUE" *) D_reg 
             #(.PARAM_WIDTH(BOX_WIDTH)) 
             D_reg_fresh_rnd_8bit
             (.clk(clk), .rst_n(rst_n), .en(1'b1), .d(fresh_rnd_shares_8bit_reg_in[idy]), .q(fresh_rnd_shares_8bit_reg[idy]));
-        end
+        end*/
         
         for (idy = 0; idy < 2 * (N_SHARES - 1); idy++)
         begin
@@ -328,13 +334,13 @@ module X2X_32b_2SHARE_HALFCYCLE_STREAM
         end
         
         // NEW
-        for (idy = 0; idy < RND_TRIANGLE_SHARES; idy++)
+        /*for (idy = 0; idy < RND_TRIANGLE_SHARES; idy++)
         begin
             (* keep_hierarchy = "TRUE" *) D_reg 
             #(.PARAM_WIDTH(PARAM_WIDTH)) 
             D_reg_fresh_rnd_modq
             (.clk(clk), .rst_n(rst_n), .en(data_type_reg), .d(fresh_rnd_modq[N_CYCLES][2 * (N_SHARES - 1) + idy]), .q(fresh_rnd_modq_reg[idy])); 
-        end 
+        end */
         
     end
     else
@@ -342,7 +348,7 @@ module X2X_32b_2SHARE_HALFCYCLE_STREAM
 //        assign S_SecAdd_out_reg = S_SecAdd[0];
         assign active_fresh_rnd = fresh_rnd_shares_reg;
         assign active_expand = en_expand_reg;
-        assign active_fresh_rnd_8bit = en_expand_reg[0] ? fresh_rnd_shares_8bit : '{default: '0}; // HERE
+        //assign active_fresh_rnd_8bit = en_expand_reg[0] ? fresh_rnd_shares_8bit : '{default: '0}; // HERE
         assign active_B2Ap_share = fresh_rnd_modq[N_CYCLES][2 * (N_SHARES - 1) - 1 : 0];
         
         (* keep_hierarchy = "TRUE" *) D_reg_NEG_EDGE 
@@ -355,13 +361,13 @@ module X2X_32b_2SHARE_HALFCYCLE_STREAM
         D_reg_en_expand1
         (.clk(clk), .rst_n(rst_n), .en(1'b1), .d(en_expand[1]), .q(en_expand_reg[1]));
         
-        for (idy = 0; idy < RND_TRIANGLE_SHARES; idy++)
+        /*for (idy = 0; idy < RND_TRIANGLE_SHARES; idy++)
         begin
             (* keep_hierarchy = "TRUE" *) D_reg_NEG_EDGE 
             #(.PARAM_WIDTH(PARAM_WIDTH)) 
             D_reg_fresh_rnd_modq
             (.clk(clk), .rst_n(rst_n), .en(data_type_reg), .d(fresh_rnd_modq[N_CYCLES][2 * (N_SHARES - 1) + idy]), .q(fresh_rnd_modq_reg[idy])); 
-        end 
+        end */
         
         for (idy = 0; idy < RND_SHARES - 2 * N_SHARES; idy++)
         begin
@@ -388,20 +394,20 @@ module X2X_32b_2SHARE_HALFCYCLE_STREAM
     
     for (idx = 0; idx < N_CYCLES; idx++)
     begin
-        for (idy = 0; idy < RND_TRIANGLE_SHARES + 2 * (N_SHARES - 1); idy++)
+        for (idy = 0; idy < RND_TRIANGLE_SHARES/* + 2 * (N_SHARES - 1)*/; idy++)
         begin
             (* keep_hierarchy = "TRUE" *) D_reg 
             #(.PARAM_WIDTH(PARAM_WIDTH)) 
             D_reg_fresh_rnd1
             (.clk(clk), .rst_n(rst_n), .en(1'b1), .d(fresh_rnd_modq[idx][idy]), .q(fresh_rnd_modq[idx+1][idy]));
         end
-        for (idy = 0; idy < RND_BOX_SHARES; idy++)
+        /*for (idy = 0; idy < RND_BOX_SHARES; idy++)
         begin
             (* keep_hierarchy = "TRUE" *) D_reg 
             #(.PARAM_WIDTH(BOX_WIDTH)) 
             D_reg_fresh_rnd8bit1
             (.clk(clk), .rst_n(rst_n), .en(1'b1), .d(fresh_rnd_8bit_modq[idx][idy]), .q(fresh_rnd_8bit_modq[idx+1][idy]));
-        end
+        end*/
         
     end
     
