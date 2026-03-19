@@ -1,7 +1,8 @@
 
 module D_reg
 #(
-    parameter PARAM_WIDTH = 32 // # bits / data word
+    parameter PARAM_WIDTH = 32, // # bits / data word
+    parameter EN = 1
 )
 (
     // GENERAL
@@ -33,15 +34,23 @@ module D_reg
 		end
 	end
 	
-    always_ff @(posedge clk, negedge rst_n) 
-    begin
-        if (rst_n == 1'b0) 
+    if (EN) begin
+        always_ff @(posedge clk, negedge rst_n) 
         begin
-            q <= '0;
-        end 
-        else 
+            if (rst_n == 1'b0) 
+            begin
+                q <= '0;
+            end 
+            else 
+            begin
+                q <= d_selected;
+            end
+        end
+    end
+    else begin
+        always_comb 
         begin
-            q <= d_selected;
+            q = d;
         end
     end
 

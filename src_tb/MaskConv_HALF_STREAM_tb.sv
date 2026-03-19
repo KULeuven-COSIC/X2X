@@ -70,7 +70,8 @@ class BOOLEAN_XSHARE
 
     constraint a_val
     {
-       unshare(shared_data) inside {[0 : q - 1]};
+//       unshare(shared_data) inside {[0 : q - 1]};
+        (shared_data[0] ^ shared_data[1] ) inside {[0 : q - 1]};
     }
 
     typedef logic [PARAM_WIDTH - 1 : 0] unshared;
@@ -105,7 +106,7 @@ module MaskConv_HALF_STREAM_tb;
     localparam DUAL_MODE = 0;       // 2 simulataneous mod power-of-two calculations
     localparam HALFCYCLE = 1;       // simulate halfcycle implementation
     localparam LAB_MODE = 1;        // 1 data operand calculates at a time
-    localparam TEST_3SHARE = 1;     // simulate 3 share implementation
+    localparam TEST_3SHARE = 0;     // simulate 3 share implementation
     localparam TEST_4SHARE = 0;     // simulate 4 share implementation
     /////////////////////////////////////////
     
